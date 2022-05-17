@@ -9,6 +9,12 @@ import webbrowser
 pygame.init() #pygame başlatıldı
 pygame.display.set_caption("Justhink") # pencere (oyunun) adı
 
+##### SESLER KISMI
+music = pygame.mixer.music.load("background_music.mp3")
+menu_sound = pygame.mixer.Sound("menu_sound.wav")
+bolum_sound = pygame.mixer.Sound("bolum_gecisi.mp3")
+correct_sound = pygame.mixer.Sound("correct_sound.wav")
+wrong_sound = pygame.mixer.Sound("wrong_sound.wav")
 
 ##############      GÖRSELLER KISMI     ###############
 #	ekran arkaplanları
@@ -138,7 +144,7 @@ class DataBase():
 		g.SCREEN = None
 		g.pencere.fill(g.siyah)
 		text_blit("İLERLEME SIFIRLANDI","ortala",285,30,"beyaz")
-		if self.dongu_sayi <= 250 :
+		if self.dongu_sayi <= 35 :
 			self.dongu_sayi += 1
 		else :
 			ekran_gecisi_1.yap("beyaz")
@@ -212,29 +218,24 @@ class Geciken_yazi() :
 		self.dongu = True
 		self.i = 0
 		self.gecik = 0
-		self.max_ = 0
 		self.cumle = ""
 		self.font=pygame.font.SysFont("Helvetica",18)
 	def ciz(self,text,yazikonumu_x,yazikonumu_y) :
 		if not (self.cumle in text):
 			self.i = 0
 			self.gecik = 0
-			self.max_ = 0
 			self.cumle = ""
-		if self.gecik == self.max_ and self.dongu == True:
+		if self.dongu == True:
 			self.cumle += text[self.i]
 			if len(self.cumle) < len(text) :
 				self.i += 1
-			if self.cumle != text :
-				self.max_+=4
 		if self.cumle != text and self.i < len(text) and self.dongu == True:
-			self.gecik+=1
+			self.gecik+=2
 			yazi = self.font.render(self.cumle,1,(255,255,255))
 		else :
 			self.dongu = False
 			self.i = 0
 			self.gecik = 0
-			self.max_ = 0
 			self.cumle = ""
 			yazi = self.font.render(text,1,(255,255,255))
 		g.pencere.blit(yazi,(yazikonumu_x,yazikonumu_y))
@@ -244,7 +245,7 @@ geciken_blit_1 = Geciken_yazi()
 geciken_blit_2 = Geciken_yazi()
 
 def tablo1():
-	text_blit('Cevabınızı girip ENTER\'a basınız','ortala',292)
+	text_blit('Mario her soruda 0\'da başlar, cevabınızı girip ENTER\'a basınız','ortala',292)
 	text_blit('Aritmetik operatörler:',200,20,24)
 	text_blit('+',200,48,24)
 	text_blit('-',200,76,24)
@@ -488,19 +489,19 @@ class Player() :
 		self.dongu = True
 
 	def kontrol(self,event):
-		if (event.key == K_RIGHT):
+		if (event.key == K_d):
 			if (self.x + self.hiz,self.y) in self.duvarlar:
 				self.ilerle = 0
 			self.x = self.x + self.hiz*self.ilerle
-		elif (event.key == K_LEFT):
+		elif (event.key == K_a):
 			if (self.x - self.hiz,self.y) in self.duvarlar:
 				self.ilerle = 0
 			self.x = self.x - self.hiz*self.ilerle
-		elif (event.key == K_UP):
+		elif (event.key == K_w):
 			if (self.x,self.y - self.hiz) in self.duvarlar:
 				self.ilerle = 0
 			self.y = self.y - self.hiz*self.ilerle
-		elif (event.key == K_DOWN):
+		elif (event.key == K_s):
 			if (self.x,self.y + self.hiz) in self.duvarlar:
 				self.ilerle = 0
 			self.y = self.y + self.hiz*self.ilerle
@@ -574,19 +575,19 @@ ok_butonu = Button(ok_butonu_yuzey,ok_butonu_basilmis_yuzey,423,354)
 sifirla_butonu = Button(sifirla_butonu_yuzey,sifirla_butonu_basilmis_yuzey,400,200,True)
 
 level_butonlari = [
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,80,230,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,170,328,False,False) ,
-Button(secunlem_butonu_yuzey,secunlem_butonu_basilmis_yuzey,230,300,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,261,328,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,350,230,False,False) ,
-Button(secunlem_butonu_yuzey,secunlem_butonu_basilmis_yuzey,410,202,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,441,230,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,441,328,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,441,230,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,530,230,False,False) ,
-Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,620,328,False,False) ,
-Button(secfinal_butonu_yuzey,secfinal_butonu_basilmis_yuzey,712,0,False,False)
-]
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,80,230,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,170,328,False,False) ,
+	Button(secunlem_butonu_yuzey,secunlem_butonu_basilmis_yuzey,230,300,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,261,328,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,350,230,False,False) ,
+	Button(secunlem_butonu_yuzey,secunlem_butonu_basilmis_yuzey,410,202,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,441,230,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,441,328,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,441,230,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,530,230,False,False) ,
+	Button(seckare_butonu_yuzey,seckare_butonu_basilmis_yuzey,620,328,False,False) ,
+	Button(secfinal_butonu_yuzey,secfinal_butonu_basilmis_yuzey,712,0,False,False) 
+	]
 
 
 class soru_butonu() :
@@ -673,23 +674,23 @@ class soru_butonu() :
 						for i in range(1,10):
 #						1. kurs sorular
 							if i == 1 :
-								bilgi_1,bilgi_2='Mario ((7-3) kere (5//2) adım ilerleyip) ,3 adım geri gelirse kaç adım ilerlemiş olur ?', '5'
+								bilgi_1,bilgi_2='Mario ((7-3) kere (5//2) adım ileri gidip), 3 adım geri gelirse kaç adım ilerlemiş olur ?', '5'
 							elif i == 2 :
-								bilgi_1,bilgi_2='Mario (70//7,6) kere (3 adım geri 6 adım ileri) giderse kaç adım ilerlemiş olur ?', '27'
+								bilgi_1,bilgi_2='Mario (70//7,6)*(3 adım geri gelip 6 adım ileri giderse) kaç adım ilerlemiş olur ?', '27'
 							elif i == 3 :
 								bilgi_1,bilgi_2='Mario 3 adım ileri gidip (216-230) geri gelirse kaç adım ilerlemiş olur ?', '17'
 							elif i == 4 :
-								bilgi_1,bilgi_2='Mario ((3**2)*2 adım) geri gelip (8-33 kere) geri giderse kaç adım ilerlemiş olur ?', '7'
+								bilgi_1,bilgi_2='Mario ((3**2)*2 adım) geri gelip (8-33 kere) geri gelirse kaç adım ilerlemiş olur ?', '7'
 							elif i == 5 :
-								bilgi_1,bilgi_2='Mario (2-5*2 adım) ilerleyip ((-3)*6/2 adım) geri gelirse kaç adım ilerlemiş olur ?', '1'
+								bilgi_1,bilgi_2='Mario (2-5*2 adım) ileri gidip ((-3)*6//2 adım) geri gelirse kaç adım ilerlemiş olur ?', '1'
 							elif i == 6 :
-								bilgi_1,bilgi_2='Mario (5 adım) ileri (1*3-2/2) geri gelirse kaç adım gerilemiş olur ?', '-3'
+								bilgi_1,bilgi_2='Mario (5 adım) ileri gidip (1*3-2//2) geri gelirse kaç adım gerilemiş olur ?', '-3'
 							elif i == 7 :
-								bilgi_1,bilgi_2='Mario (20*36)/(2*18) adım ileri ve (20 adım) geri gelirse kaç adım atmış olur ?', '40'
+								bilgi_1,bilgi_2='Mario (20*36)//(2*18) adım ileri ve (20 adım) geri gelirse kaç adım atmış olur ?', '40'
 							elif i == 8 :
-								bilgi_1,bilgi_2='Mario (2/3 kere 27 adım) ileri (10 adım) geri gelirse kaç adım atmış olur ?', '28'
+								bilgi_1,bilgi_2='Mario (3//2 kere 27 adım) ileri (10 adım) geri gelirse kaç adım atmış olur ?', '37'
 							elif i == 9 :
-								bilgi_1,bilgi_2='Mario 2(123%29 adım) ilerlerse kaç adım ilerlemiş olur ?', '14'
+								bilgi_1,bilgi_2='Mario 2*(123%29 adım) ileri giderse kaç adım ilerlemiş olur ?', '8'
 
 							con.execute("INSERT INTO justhink_soru(soru,cevap,_id) VALUES(:b1,:b2,:b3)",{'b1':bilgi_1,'b2':bilgi_2,'b3':i})
 						con.commit()
@@ -702,19 +703,19 @@ class soru_butonu() :
 								elif i == 12 :
 									bilgi_1,bilgi_2='Yazıcı hangisine bir örnektir ? (input, output)', 'output'
 								elif i == 13 :
-									bilgi_1,bilgi_2="inputu 5 ve 3 olduğunda, outputu -2 olabilen operatör(+, - ...vb) hangisidir ?", '-'	
+									bilgi_1,bilgi_2="İnputu 5 ve 3 olduğunda, outputu -2 olabilen operatör(+, - ...vb) hangisidir ?", '-'	
 								elif i == 14 :
 									bilgi_1,bilgi_2='5 ve 7 inputuyla, 1 outputu elde edilebilecek operatör(+, - ...vb) hangisidir ?', '//'
 								elif i == 15 :
 									bilgi_1,bilgi_2='Gözlerimizin saniyede 60 fotoğraf çekmesi beyine ne sağlar ? (input, output)', 'input'
 								elif i == 16 :
-									bilgi_1,bilgi_2='Refleks, Beyincik sayesinde kısa sürede üretilen ... (inputtur,outputtur)', 'outputtur'
+									bilgi_1,bilgi_2='Refleks, beyincik sayesinde kısa sürede üretilen ... (inputtur,outputtur)', 'outputtur'
 								elif i == 17 :
-									bilgi_1,bilgi_2='İki tane rakam inputu ile çarpma operatöründen elde edilebilecek output sayısı kaçtır ?', '82'
+									bilgi_1,bilgi_2='İki tane rakam inputu ile çarpma operatöründen elde edilebilecek output sayısı kaçtır ?', '90'
 								elif i == 18 :
-									bilgi_1,bilgi_2='İki farklı çift sayı inputuyla 1 outputu verebilen operatör(+, - ...vb) hangisidir ?', '**'
+									bilgi_1,bilgi_2='Cevap, iki farklı çift sayı inputuyla 1 outputu verebilen bir operatördür(+, - ...vb).', '**'
 								elif i == 19 :
-									bilgi_1,bilgi_2='iki farklı sayı ve eksi operatörü ile yapılabilecek outputların toplamı kaçtır ?', '0'
+									bilgi_1,bilgi_2='Sabit iki farklı sayı ve eksi operatörü ile yapılabilecek outputların toplamı kaçtır ?', '0'
 								con.execute("INSERT INTO justhink_soru(soru,cevap,_id) VALUES(:b1,:b2,:b3)",{'b1':bilgi_1,'b2':bilgi_2,'b3':i})
 							con.commit()
 						elif self.level == 3 and self.tablodaki_sorular <= 18:
@@ -725,11 +726,11 @@ class soru_butonu() :
 								elif i == 22 :
 									bilgi_1,bilgi_2='(Işık □ızı == Ses hızı) = ?', 'False'
 								elif i == 23 :
-									bilgi_1,bilgi_2='"((2**3) _ (3**2)) = True" işlemind□ boşluğa hangi ilişkisel operatör gelm□lidir ?', '<'
+									bilgi_1,bilgi_2='Cevap,"((2**3) _ (3**2)) = True" işlemind□ boşluğa gelebilecek bir ilişkisel operatördür.', '<'
 								elif i == 24 :
-									bilgi_1,bilgi_2='"((2//3) _ 0) = True" işlemi□de boşluğa hangi ilişkisel operatör gelmelidir ?', '=='
+									bilgi_1,bilgi_2='Cevap,"((2//3) _ 0) = True" işlemi□de boşluğa gel□bilecek bir ilişkis□l operatördür.', '=='
 								elif i == 25 :
-									bilgi_1,bilgi_2='"R□kamlar _ 0 = True" işleminde boşl□ğa hangi ilişkisel operatör gelmelidir ?', '>='
+									bilgi_1,bilgi_2='"Herhangi r□kam _ 0 = True" işleminde boşl□ğa hangi ilişkisel operatör gelmelidir ?', '>='
 								elif i == 26 :
 									bilgi_1,bilgi_2='"(x < 23) = Tr□e","(x < 12) = False" buna göre "x" kaç farklı tam sayı olabi□ir ?', '11'
 								elif i == 27 :
@@ -737,30 +738,30 @@ class soru_butonu() :
 								elif i == 28 :
 									bilgi_1,bilgi_2='"((x*2)-3) <= 63" buna göre "x" kaç farklı p□zitif tam sayı olabilir ?', '33'
 								elif i == 29 :
-									bilgi_1,bilgi_2='"1 Kb _ 1 byte" İşleminde boşluğa hangi il□şkisel operatör gelmelidir', '>'
+									bilgi_1,bilgi_2='Cevap,"1 Kb _ 1 byte" İşleminde boşluğa gelebilecek bir ilişkisel operatördür.', '>'
 								con.execute("INSERT INTO justhink_soru(soru,cevap,_id) VALUES(:b1,:b2,:b3)",{'b1':bilgi_1,'b2':bilgi_2,'b3':i})
 							con.commit()
 						elif self.level == 4 and self.tablodaki_sorular <= 27:
 							for i in range(31,40):
 #							4. kurs sorular
 								if i == 31 :
-									bilgi_1,bilgi_2='cevap "(False==1 or 1 _ 2)#True"için boşluğa gelebilecek bir operatördür.', '<'
+									bilgi_1,bilgi_2='Cevap,"(False==1 or 1 _ 2)#True" için boşluğa gelebilecek bir operatördür.', '<'
 								elif i == 32 :
-									bilgi_1,bilgi_2='cevap "(False!=1 and 10**0 _ 2**1)#True" için boşluğa gelebilecek bir operatördür.', '>='
+									bilgi_1,bilgi_2='Cevap,"(False!=1 and 10**0 _ 2**1)#True" için boşluğa gelebilecek bir operatördür.', '<'
 								elif i == 33 :
-									bilgi_1,bilgi_2='"(x>2 or 12<=x+4)#True" için x kaç farklı tam sayı olabilir', '6'
+									bilgi_1,bilgi_2='"(x<2 or 15<=x+2)#False" için x kaç farklı tam sayı olabilir ?', '11'
 								elif i == 34 :
-									bilgi_1,bilgi_2='"not(x<2 and 12>x+4)#True" için x kaç farklı tam sayı olabilir', '7'
+									bilgi_1,bilgi_2='"(not(x<2 or 12>x+4))#True" için x kaç farklı tam sayı olabilir ?', '7'
 								elif i == 35 :
 									bilgi_1,bilgi_2='"(not(2==2) or x)#False" için x hangi booldur(True/False) ?', 'False'
 								elif i == 36 :
-									bilgi_1,bilgi_2='"True != not(False) and 1" işleminin outputu nedir(True/False) ?', 'False'
+									bilgi_1,bilgi_2='"True!=not(False) and 1" işleminin outputu nedir(True/False) ?', 'False'
 								elif i == 37 :
-									bilgi_1,bilgi_2='"((10/3)<2 and x)#False" için x kaç farklı bool olabilir ?', '1'
+									bilgi_1,bilgi_2='"((10/3)>2 and x)#False" için x kaç farklı bool olabilir ?', '1'
 								elif i == 38 :
 									bilgi_1,bilgi_2='"((3//10)<=0 or x)#True" için x kaç farklı bool olabilir ?', '2'
 								elif i == 39 :
-									bilgi_1,bilgi_2='"(a+x<2 ve a=-3)#True" için x kaç farklı pozitif tam sayı olabilir ?','4'
+									bilgi_1,bilgi_2='"(a+x<2 and a=-3)#True" için x kaç farklı pozitif tam sayı olabilir ?','4'
 								con.execute("INSERT INTO justhink_soru(soru,cevap,_id) VALUES(:b1,:b2,:b3)",{'b1':bilgi_1,'b2':bilgi_2,'b3':i})
 							con.commit()
 						elif self.level == 5 and db.eski_tl <= 36:
@@ -775,13 +776,13 @@ class soru_butonu() :
 								elif i == 44 :
 									bilgi_1,bilgi_2='f(a**2)=(a**2)-a*2 ise f(16)\'nın outputu nedir?', '8'
 								elif i == 45 :
-									bilgi_1,bilgi_2='f(2a,b)=(2b/a) ise f(4,3)\'nin outputu nedir?', '3'
+									bilgi_1,bilgi_2='f(2a,b)=(2b-a) ise f(4,3)\'nin outputu nedir?', '2'
 								elif i == 46 :
-									bilgi_1,bilgi_2='f(konum,adım,uzunluk): return konum+(adım*uzunluk) ise f(20,5,12) = ?', '80'
+									bilgi_1,bilgi_2='f(konum,adım,uzunluk): return(konum+(adım*uzunluk)) ise f(20,5,12) = ?', '80'
 								elif i == 47 :
 									bilgi_1,bilgi_2='f(x)=x*2  ise f(5)*f(3) = ?', '60'
 								elif i == 48 :
-									bilgi_1,bilgi_2='f(y)=y//2 ve g(z)=z*2 ise g(g(6)) // f(g(3)) = ?', '8'
+									bilgi_1,bilgi_2='f(y)=y//2 ise f(f(27)) = ?', '6'
 								elif i == 49 :
 									bilgi_1,bilgi_2='f(y)=y*2 ve g(f(z))=(z+2)//2 ise g(6) = ?', '2'
 								con.execute("INSERT INTO justhink_soru(soru,cevap,_id) VALUES(:b1,:b2,:b3)",{'b1':bilgi_1,'b2':bilgi_2,'b3':i})
@@ -805,8 +806,12 @@ class soru_butonu() :
 					self.girdi = self.girdi[:-1]
 				elif event.key == pygame.K_RETURN :
 					if self.girdi == self.cevap :
+						if g.muzik:
+							correct_sound.play()
 						self.sonuc = True
 					else :
+						if g.muzik:
+							wrong_sound.play()
 						self.sonuc = False
 				elif len(self.girdi)<=10:
 					self.girdi += event.unicode
@@ -822,7 +827,7 @@ class soru_butonu() :
 				self.color = self.color_koyu
 			if self.sonuc == False :
 				text_blit('Cevabınız Yanlış !','ortala',self.box_y + 24,18,'kirmizi')
-		if self.sonuc == True:
+		if self.sonuc:
 			g.pencere.blit(self.text_surface,(self.input_rect.x + 5,self.input_rect.y + 5))
 			pygame.draw.rect(g.pencere,self.color,self.input_rect,2)
 		else : 
@@ -880,7 +885,11 @@ class ad_alma_butonu() :
 			elif event.key == pygame.K_RETURN :
 				self.dongu=False
 			elif len(g.kullanici_adi)<=20:
-				g.kullanici_adi += event.unicode
+				try:
+					g.kullanici_adi += event.unicode
+					g.kullanici_adi = g.kullanici_adi[0].upper() + g.kullanici_adi[1:]
+				except IndexError:
+					pass
 	def ciz(self):
 		if self.text_butonu_aktif :
 			self.color = self.color_acik
@@ -952,12 +961,14 @@ class buton_yazi():
 			self.link_rengi = (155,205,255)
 		else :
 			self.link_rengi = (0,0,0)
-		self.link = link
 		self.yazi = yazi
 		self.x_konum = x_konum
 		self.y_konum = y_konum
 		self.yaziY = yaziY
-		self.link_font=pygame.font.SysFont("Helvetica",self.yaziY)
+		self.link_font=pygame.font.SysFont("Helvetica",yaziY)
+		self.link_font_render = self.link_font.render(self.yazi, True, self.link_rengi)
+		if x_konum == 'ortala':
+			self.x_konum = (self.link_font_render.get_size()[0]+126) // 2
 		self.rect = None
 		self.cizgi_koy = False
 		self.deger = False
@@ -979,9 +990,10 @@ class buton_yazi():
 			self.deger = False
 			self.cizgi_koy = False
 	def draw(self):
-		self.rect = g.pencere.blit(self.link_font.render(self.yazi, True, self.link_rengi), (self.x_konum, self.y_konum))
+		self.rect = g.pencere.blit(self.link_font_render, (self.x_konum, self.y_konum))
 		if self.cizgi_koy :
 			pygame.draw.rect(g.pencere, self.link_rengi, (self.x_konum, self.y_konum + self.yaziY + 1, self.rect.width,3), 0)
+muzik_link = buton_yazi('Arkaplan müziği referans linki (çift tıklayın)','ortala',384,'https://www.chosic.com/download-audio/28343/')
 link_list = [
 buton_yazi('Python yazılım dilinin ana sitesi',60,120,'https://www.python.org/'),
 buton_yazi('Günlük gifi referans linki',80,208,'www.pinterest.com/pin/413627547020018011/'),
@@ -1019,16 +1031,16 @@ class ekran() :
 			self.renk_3 = 155,155,155
 			self.renk_2 = 205,205,205
 			self.renk_1 = 230,230,230
-		if self.gecis <=180 :
-			if self.gecis<=35:
+		if self.gecis <=6 :
+			if self.gecis<=1:
 				g.pencere.fill((self.renk_1))
-			elif self.gecis<=70:
+			elif self.gecis<=2:
 				g.pencere.fill((self.renk_2))
-			elif self.gecis<=105:
+			elif self.gecis<=3:
 				g.pencere.fill((self.renk_3))
-			elif self.gecis<=140:
+			elif self.gecis<=4:
 				g.pencere.fill((self.renk_4))
-			elif self.gecis<=175:
+			elif self.gecis<=5:
 				g.pencere.fill((self.renk_5))
 			else:
 				g.pencere.fill((self.renk_6))
@@ -1048,10 +1060,10 @@ class Dialog_kutusu() :
 		self.sayi = 21
 	def ciz(self,konusan) :
 		if dialog_butonu.dongu == True :
-			if self.dialogdongunun_sayisi <= 7:
+			if self.dialogdongunun_sayisi <= 8:
 				g.pencere.blit(dialogkutusu_image,(0,429 + int(self.sayi)))
-				self.dialogdongunun_sayisi += 0.2
-				self.sayi += 5
+				self.dialogdongunun_sayisi += 1
+				self.sayi += 25
 			else :
 				l.dialog = False
 				self.dialogdongunun_sayisi = 0
@@ -1127,6 +1139,14 @@ class level_sec() :
 		for i in range(0,self.buton_sayisi+1) :
 			if not (i == 6 and db.eski_tl > 5):
 				level_butonlari[i].changeColor((g.x,g.y))
+				if not (i == 2 or i == 5 or i == 11):
+					i_2 = i
+					i_2+=1
+					if i > 2 :
+						i_2-=1
+						if i > 5:
+							i_2-=1
+					text_blit(f'{i_2}','ortala',level_butonlari[i].y_konum+20,30,"siyah",level_butonlari[i].x_konum,54)
 		if db.eski_tl < 9 :
 			g.pencere.blit(levelwall_image,(self.wall_x,0))
 #
@@ -1286,7 +1306,7 @@ class p_Ball:
 def p_draw(win, paddles, ball, zaman):
 	win.fill((0,0,0))
 
-	zaman = p_ZAMAN_FONT.render(str(zaman//60),1,(255,255,255),(0,0,0))
+	sayac = p_ZAMAN_FONT.render(str((zaman-otest.pong.gecmis)//1000),1,(255,255,255),(0,0,0))
 
 	for paddle in paddles:
 		paddle.draw(win)
@@ -1296,7 +1316,7 @@ def p_draw(win, paddles, ball, zaman):
 			continue
 		pygame.draw.rect(win, (255,255,255), (p_WIDTH//2 - 5, i, 10, p_HEIGHT//20))
 
-	win.blit(zaman, (p_WIDTH//2 - zaman.get_width()//2, 20))
+	win.blit(sayac, (p_WIDTH//2 - sayac.get_width()//2, 20))
 	ball.draw(win)
 
 
@@ -1345,18 +1365,22 @@ def p_handle_paddle_movement(keys, left_paddle, right_paddle):
 class p_main():
 	def __init__(self):
 		self.run = True
-		self.clock = pygame.time.Clock()
 
 		self.left_paddle = p_Paddle(10, p_HEIGHT//2 - p_PADDLE_HEIGHT //2, p_PADDLE_WIDTH, p_PADDLE_HEIGHT)
 		self.right_paddle = p_Paddle(p_WIDTH - 10 - p_PADDLE_WIDTH, p_HEIGHT //2 - p_PADDLE_HEIGHT//2, p_PADDLE_WIDTH, p_PADDLE_HEIGHT)
 		self.ball = p_Ball(p_WIDTH // 2, p_HEIGHT // 2, p_BALL_RADIUS)
 
+		self.bekletilen = 0
+		self.bekletilen_baslangic = 0
 		self.zaman = 0
+		self.gecmis = 0
+		self.ilk_acis = 1
 
 	def dongu(self):
-		self.clock.tick(60)
-		self.zaman +=1
-		p_draw(g.pencere, [self.left_paddle, self.right_paddle], self.ball, self.zaman)
+		self.zaman = pygame.time.get_ticks() - self.bekletilen
+		if self.ilk_acis:
+			self.gecmis = self.zaman
+			self.ilk_acis = 0
 
 
 		keys = pygame.key.get_pressed()
@@ -1365,14 +1389,17 @@ class p_main():
 		self.ball.move()
 		p_handle_collision(self.ball, self.left_paddle, self.right_paddle)
 
-		if self.ball.x < 0:
-			self.zaman = 0
+		if self.ball.x <= 0:
+			self.gecmis = self.zaman
 			self.ball.reset()
-		elif self.ball.x > p_WIDTH:
-			self.zaman = 0
+		elif self.ball.x >= p_WIDTH - 14:
+			self.gecmis = self.zaman
 			self.ball.reset()
 
-		if self.zaman//60 >= 180:
+		p_draw(g.pencere, [self.left_paddle, self.right_paddle], self.ball, self.zaman)
+
+		if (self.zaman-self.gecmis)//1000 >= 180:
+			self.ilk_acis = 1
 			self.zaman = 0
 			text = p_ZAMAN_FONT.render("Kazandın !", 1, (0,204,0),(0,0,0))
 			g.pencere.blit(text, (p_WIDTH//2 - text.get_width() //2, p_HEIGHT//2 - text.get_height()//2))
@@ -2109,9 +2136,9 @@ class Gunluk_gif(pygame.sprite.Sprite) :
 			self.sprites.append(pygame.image.load(f'Diary-{self.sayi}.png.png'))
 			self.sayi += 1
 		self.image = self.sprites[int(self.mevcut_sprite)]
-		self.mevcut_sprite += 0.3
+		self.mevcut_sprite += 0.8
 		if self.mevcut_sprite >= len(self.sprites) :
-			self.mevcut_sprite = 0
+			self.mevcut_sprite -= 18
 		self.image = self.sprites[int(self.mevcut_sprite)]
 		g.pencere.blit(self.image,(0,-50))
 
@@ -2133,6 +2160,7 @@ class Game():
 		self.pencere = pygame.display.set_mode((800,600) , pygame.HWSURFACE) # 800 ,600 boyutunda video penceresi aç
 		self.siyah,self.beyaz = (0,0,0),(255,255,255) # rgb renklerine değişken atandı
 		self.mouseX,self.mouseY = None,None
+		self.muzik_ilk = True
 
 	def check_events(self):
 		for event in pygame.event.get():
@@ -2151,6 +2179,7 @@ class Game():
 						ad_al_butonu.mousedown_kontrol(event,(self.x,self.y))
 					if self.SCREEN == "ayarlar" :
 						ad_degis_butonu.mousedown_kontrol(event,(self.x,self.y))
+						muzik_link.checkForInput((self.x,self.y))
 						if self.muzik == 1 :
 							sesacik_butonu.checkForInput((self.x,self.y))
 						elif self.muzik == 0 :
@@ -2240,6 +2269,9 @@ class Game():
 					game.key_down(event)
 
 	def oyun_dongusu(self):
+		if self.muzik:
+			pygame.mixer.music.play(-1)
+			self.muzik_ilk = False
 		while self.playing :
 			self.x,self.y=pygame.mouse.get_pos()
 			self.check_events()
@@ -2250,34 +2282,61 @@ class Game():
 					if self.SCREEN == 'ayarlar' :
 						if self.muzik == 1 and sesacik_butonu.dongu == True:
 							self.muzik = 0
+							pygame.mixer.music.pause()
+							self.muzik_ilk = False
 							sesacik_butonu.dongu = False
 							db.update('mz')
 						elif self.muzik == 0 and seskapali_butonu.dongu == True:
 							self.muzik = 1
+							if self.muzik_ilk:
+								self.muzik_ilk = False
+								pygame.mixer.music.play(-1)
+							else:
+								pygame.mixer.music.unpause()
 							seskapali_butonu.dongu = False
 							db.update('mz')
 				if oyna_butonu.dongu == True:
+					if (l.mevcut_level == 9 and l.kisim == 2) and otest.secilen == 1:
+						otest.pong.bekletilen += pygame.time.get_ticks() - otest.pong.bekletilen_baslangic
+						otest.pong.bekletilen_baslangic = 0
+						
+					if self.muzik:
+						menu_sound.play()
 					self.SCREEN = "mevcut_level"
 					oyna_butonu.dongu=False
 				if ozelt_butonu.dongu == True:
+					if self.muzik:
+						menu_sound.play()
 					self.SCREEN = "ozelt"
 					ozelt_butonu.dongu=False
 				if ayarlar_butonu.dongu == True:
+					if self.muzik:
+						menu_sound.play()
 					self.SCREEN = "ayarlar"
 					ayarlar_butonu.dongu=False
 				if referanslar_butonu.dongu == True:
+					if self.muzik:
+						menu_sound.play()
 					self.SCREEN = "referanslar"
 					referanslar_butonu.dongu=False
 				if geri_butonu.dongu == True:
+					if self.muzik:
+						menu_sound.play()
 					self.SCREEN = "menu"
 					geri_butonu.dongu=False
 			elif self.SCREEN == "mevcut_level":
 				l.play_mevcut_level()
 				if geri_butonu.dongu == True:
+					if self.muzik:
+						menu_sound.play()
+					if (l.mevcut_level == 9 and l.kisim == 2) and otest.secilen == 1:
+						otest.pong.bekletilen_baslangic = pygame.time.get_ticks()
 					self.SCREEN = "menu"
 					geri_butonu.dongu=False
-
-
+			if (l.mevcut_level == 9 and l.kisim == 2) and otest.secilen == 1:
+				self.clock.tick(60)
+			else:
+				self.clock.tick(20)
 			self.ekrani_boya()
 			pygame.display.update()
 
@@ -2297,13 +2356,11 @@ class Game():
 			if self.oyunda == False:
 				if self.SCREEN == "ozelt":
 					self.pencere.blit(ozelT_image,(0,0))
-					text_blit('Ailelerimize,','ortala',188,32,"beyaz")
+					text_blit('Aileme,','ortala',188,32,"beyaz")
 					text_blit('Oynayanlara,','ortala',224,32,"beyaz")
-					text_blit('Kaan olarak Yağız Burak\'a,','ortala',260,32,"beyaz")
-					text_blit('Yağız olarak Kaan Tekmen\'e,','ortala',296,32,"beyaz")
-					text_blit('Engin Cüce Hocamıza,','ortala',332,32,"beyaz")
-					text_blit('Referanslara','ortala',368,32,"beyaz")
-					text_blit('TEŞEKKÜR EDERİZ.','ortala',404,32,"beyaz")
+					text_blit('Engin Cüce Hocama,','ortala',260,32,"beyaz")
+					text_blit('Referanslara','ortala',296,32,"beyaz")
+					text_blit('TEŞEKKÜR EDERİM.','ortala',332,32,"beyaz")
 					
 				elif self.SCREEN == "ayarlar":
 					self.pencere.blit(ayarlar_image,(0,0))
@@ -2316,6 +2373,7 @@ class Game():
 						sesacik_butonu.changeColor((self.x,self.y))
 					elif self.muzik == 0 :
 						seskapali_butonu.changeColor((self.x,self.y))
+					muzik_link.draw()
 				elif self.SCREEN == "referanslar":
 					self.pencere.blit(referanslar_image,(0,0))
 					text_blit('Python diliyle yazılmıştır. (pygame,os,sqlite3,random,webbrowser kütüphaneleri kullanıldı)',40,98,18,"beyaz")
@@ -2428,14 +2486,22 @@ class Game_level():
 					ekran_gecisi_1.dongu = True
 					if levelsec.cikti <= 1 :
 						self.mevcut_level = levelsec.cikti + 1
+						if levelsec.cikti == 1 :
+							ekran_gecisi_1.dongu = False
 					elif levelsec.cikti >= 2 :
 						self.mevcut_level = levelsec.cikti
-						if levelsec.cikti == 2 :
+						
+						if not(levelsec.cikti == 2):
+							ekran_gecisi_1.dongu = False
+						elif levelsec.cikti == 2 :
 							self.kisim = 'hack_1'
-						elif levelsec.cikti >= 5 :
+						if levelsec.cikti >= 5 :
 							self.mevcut_level = levelsec.cikti - 1
 							if levelsec.cikti == 5 :
 								self.kisim = 'hack_2'
+							else:
+								ekran_gecisi_1.dongu = False
+								
 
 	def kullanici_adi_al(self):
 		self.mevcut_level = "kullanici_adi_al"
@@ -2455,7 +2521,7 @@ class Game_level():
 					text_blit(g.kullanici_adi + " :",180,465,18,"beyaz")
 					geciken_blit_1.ciz("Günlüğüme bakıyordum ,her günümün aynı geçtiğini fark ettim. Büyü-",200,487)
 					if geciken_blit_1.dongu == False : 
-						geciken_blit_2.ciz("müştüm ,ama hiç üretken değildim. Bir amaç edinmek istiyordum.",200,509)
+						geciken_blit_2.ciz("müştüm, ama hiç üretken değildim. Bir amaç edinmek istiyordum.",200,509)
 				elif self.dialog == False:
 					self.kisim += 1
 					self.dialog = True
@@ -2476,7 +2542,7 @@ class Game_level():
 						dialog_kutusu.ciz("kullanici")
 					if dialog_butonu.dongu == False and self.dialog == True :
 						text_blit(g.kullanici_adi + " :",180,465,18,"beyaz")
-						geciken_blit_1.ciz("kod yazmak bana mantıklı geldi. Ücretsiz kaynakları araştırdım ",200,487)
+						geciken_blit_1.ciz("kod yazmak bana mantıklı geldi. Ücretsiz kaynakları araştırdım.",200,487)
 						if geciken_blit_1.dongu == False : 
 							geciken_blit_2.ciz("ve kodlama temelleri ile oyun yapmak için JUSTHINK'i buldum",200,509)
 					elif self.dialog == False:
@@ -2497,7 +2563,7 @@ class Game_level():
 				text_blit(g.kullanici_adi + " :",180,465,18,"beyaz")
 				text_blit("Justhink","ortala",176,30,"siyah")
 				text_blit("asistan ile oyun yapımı !","ortala",210,24,"siyah")
-				geciken_blit_1.ciz("Uygulamayı denesem ne kaybedebilirdim ,indirdim",200,487)
+				geciken_blit_1.ciz("Uygulamayı denesem ne kaybedebilirdim ,indirdim.",200,487)
 			elif self.dialog == False:
 				self.kisim += 1
 				self.dialog = True
@@ -2515,9 +2581,9 @@ class Game_level():
 						dialog_kutusu.ciz("kullanici")
 					if dialog_butonu.dongu == False and self.dialog == True :
 						text_blit(g.kullanici_adi + " :",180,465,18,"beyaz")
-						geciken_blit_1.ciz("Uygluma indi ve masaustume ekledim (dialog kutusunu kapatıp uygula-",200,487)
+						geciken_blit_1.ciz("Uygluma indi ve masaustume ekledim. (dialog kutusunu kapatıp uygula-",200,487)
 						if geciken_blit_1.dongu == False : 
-							geciken_blit_2.ciz("maya basın ve Bölüm 2 başlasın)",200,509)
+							geciken_blit_2.ciz("maya basın ve Bölüm 2 başlasın.)",200,509)
 					elif self.dialog == False:
 						if masaustu_butonu.dongu == True :
 							masaustu_butonu.dongu = False
@@ -2532,8 +2598,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("2. BÖLÜM","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -2631,8 +2699,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("3. BÖLÜM","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -2681,8 +2751,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("4. BÖLÜM","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -2753,9 +2825,9 @@ class Game_level():
 				dialog_kutusu.ciz("yuz_3")
 			if dialog_butonu.dongu == False and self.dialog == True :
 				text_blit("asistan :",180,465,18,"beyaz")
-				geciken_blit_1.ciz("BU SEFER SALDIRIDAN KURTULMAK İÇİN, SANA VERECEĞİM İPUÇLARINA",200,487)
+				geciken_blit_1.ciz("SALDIRIDAN KURTULMAK İÇİN, SANA VERECEĞİM İPUÇLARI-",200,487)
 				if geciken_blit_1.dongu == False : 
-					geciken_blit_2.ciz("GÖRE DOSYALARI ÜSTLERİNE TIKLAYARAK DÜZENLE !!!",200,509)
+					geciken_blit_2.ciz("NA GÖRE DOSYALARI ÜSTLERİNE TIKLAYARAK DÜZENLE !!!",200,509)
 			elif self.dialog == False:
 				self.kisim = 'hack_2'
 				self.dialog = True
@@ -2817,8 +2889,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("5. BÖLÜM","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -2866,8 +2940,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("KURTARMA BÖLÜMÜ","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -2915,8 +2991,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("7. BÖLÜM","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -2963,8 +3041,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("8. BÖLÜM","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -3011,8 +3091,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("9. BÖLÜM","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
@@ -3058,8 +3140,10 @@ class Game_level():
 			ekran_gecisi_1.yap("siyah")
 			if ekran_gecisi_1.dongu == False :
 				g.pencere.fill(g.siyah)
+				if g.muzik:
+					bolum_sound.play()
 				text_blit("FİNAL","ortala",285,30,"beyaz")
-				if self.bolumekrani_dongu <=250 :
+				if self.bolumekrani_dongu <=35 :
 					self.bolumekrani_dongu+=1
 				else :
 					ekran_gecisi_2.yap("beyaz")
